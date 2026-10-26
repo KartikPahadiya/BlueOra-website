@@ -8,11 +8,11 @@ import { FRAME_COUNT, frames, onFrameLoaded } from '../frames';
      scroll = top of section 1  ->  frame 1
      scroll = end of section 2 reaches the bottom of the screen -> frame 151
 
-   "blueora" and the tagline are driven by the same progress value, so
+   "BlueOra" and the tagline are driven by the same progress value, so
    scrolling down plays forward and scrolling up plays in reverse.
 ------------------------------------------------------------------- */
 const CFG = {
-  brandWidth: 0.6,      // "blueora" is 60% of the screen width at the start
+  brandWidth: 0.6,      // "BlueOra" is 60% of the screen width at the start
   brandEndScale: 0.5,   // ...and shrinks to 50% of that at the end
   padX: 0.045,          // left / right margin of the final positions (share of screen width)
   headerH: 76,          // height of the fixed header (keeps the text clear of it)
@@ -83,7 +83,7 @@ export default function Hero() {
       const e = ease(p);
       const padX = Math.max(20, W * CFG.padX);
 
-      // "blueora": middle band, centred  ->  top band, left, half size
+      // "BlueOra": middle band, centred  ->  top band, left, half size
       const s = 1 + (CFG.brandEndScale - 1) * e;
       const x0 = (W - bw) / 2;
       const y0 = (H - bh) / 2;
@@ -92,10 +92,11 @@ export default function Hero() {
       brand.style.transform =
         `translate3d(${x0 + (x1 - x0) * e}px, ${y0 + (y1 - y0) * e}px, 0) scale(${s})`;
 
-      // tagline: grows out of the right edge into the bottom band
-      const ts = CFG.tagStartScale + (1 - CFG.tagStartScale) * e;
-      const off = (1 - e) * (padX + tw * 0.5);          // starts fully off-screen on the right
-      const tx = W - padX - tw + off;
+      // Stop all tagline motion when the background's right edge touches the screen edge.
+      const tagProgress = Math.min(1, e / 0.78);
+      const ts = CFG.tagStartScale + (1 - CFG.tagStartScale) * tagProgress;
+      const off = (1 - tagProgress) * (padX + tw * 0.5);
+      const tx = W - tw * ts + off;
       const ty = (H * 5) / 6 - th / 2;
       tag.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${ts})`;
       tag.style.opacity = Math.min(1, e / CFG.tagFadeEnd);
@@ -126,7 +127,7 @@ export default function Hero() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       cv.width = Math.max(1, Math.round(W * dpr));
       cv.height = Math.max(1, Math.round(H * dpr));
-      // fit "blueora" to 60% of the screen width, whatever font is in use
+      // fit "BlueOra" to 60% of the screen width, whatever font is in use
       brand.style.fontSize = '100px';
       const w100 = brand.offsetWidth || 1;
       brand.style.fontSize = `${(100 * W * CFG.brandWidth) / w100}px`;
@@ -167,7 +168,7 @@ export default function Hero() {
     <div className="hero" ref={trackRef} id="home">
       <div className="hero__stage" ref={stageRef}>
         <canvas className="hero__canvas" ref={canvasRef} />
-        <h1 className="hero__brand" ref={brandRef}>blueora</h1>
+        <h1 className="hero__brand" ref={brandRef} data-text="BlueOra">BlueOra</h1>
         <p className="hero__tagline" ref={tagRef}>
           stay hydrated
           <br />

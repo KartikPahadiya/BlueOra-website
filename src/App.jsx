@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Loader from './components/Loader.jsx';
 import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
+import About from './components/About.jsx';
+import ProductCarousel from './components/ProductCarousel.jsx';
+import Footer from './components/SiteFooter.jsx';
 import { preloadFrames } from './frames.js';
 
 // intro stages, in order
@@ -62,10 +65,12 @@ export default function App() {
       <main>
         {/* sections 1 + 2: frame sequence */}
         <Hero />
-        {/* section 3 */}
-        <section className="panel panel--blue" id="section-3" aria-label="Section 3" />
-        {/* section 4 */}
-        <section className="panel panel--red" id="section-4" aria-label="Section 4" />
+        {/* section 3: editable About content */}
+        <About />
+        {/* section 4: infinite product carousel */}
+        <ProductCarousel />
+        {/* Independent scroll track: sections can be inserted above without breaking the reveal. */}
+        <Footer />
       </main>
 
       {intro && (
